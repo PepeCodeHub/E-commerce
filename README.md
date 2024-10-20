@@ -1,77 +1,90 @@
 # E-commerce
 E-commerce Project base on microservices architecture
 
-Overall Architecture
 ```mermaid
 graph TD
+    %% Define the main project group
+    subgraph project [Ecommerce]
+        client[Client]
+        backoffice[Backoffice]
+        gateway[API Gateway]
 
-    %% Backoffice Admin Interactions
-    subgraph Backoffice
-        direction TB
-        backoffice[Backoffice] <-->|HTTP Requests| api_gateway
-    end
-    
-    %% External Client (Customer)
-    subgraph External Client
-        direction TB
-        client[Client] <-->|HTTP Requests| api_gateway
-    end
+        %% Define the microservices group within the project
+        subgraph microservices [Microservices]
+            cart[Cart Service]
+            orders[Order Service]
+            payments[Payment Service]
+            products[Product Service]
+            rabbitmq[RabbitMQ]
+        end
 
-    %% API Gateway routes to microservices
-    subgraph API Gateway
-        direction TB
-        api_gateway[API Gateway] --> product_service[Product Service]
-        api_gateway --> auth_service[Auth Service]
-        api_gateway --> order_service[Order Service]
-        api_gateway --> payment_service[Payment Service]
-    end
-    
-    %% Logs Service
-    subgraph Logging
-        direction TB
-        api_gateway --> logs_service[Logs Service]
-    end
-    
-    %% Message broker (RabbitMQ) for inter-service communication
-    subgraph Messaging
-        direction TB
-        order_service <-->|Publish Events| rabbitmq[(RabbitMQ)]
-        payment_service <-->|Listen for Events| rabbitmq
-    end
-    
-    %% Microservices to Redis
-    subgraph Caching
-        direction TB
-        product_service <--> redis[(Redis)]
-        auth_service <--> redis
-        order_service <--> redis
-        payment_service <--> redis
-        logs_service <--> redis
-    end
-    
-    %% Periodically update primary databases from Redis
-    subgraph Databases
-        direction TB
-        redis <-->|Update Periodically| mongo[(MongoDB)]
-        redis <-->|Update Periodically| postgres[(PostgreSQL)]
-    end
-    
-    %% WebSocket interactions
-    subgraph WebSocket Interactions
-        direction TB
-        client -.->|WebSocket Connection| websocket_service[WebSocket Service]
-        websocket_service -.->|Notify Client| client
-        websocket_service -.->|Notify Admin| backoffice
-        websocket_service <-->|Send Notifications| rabbitmq
-        product_service --> websocket_service
-        order_service --> websocket_service
-        payment_service --> websocket_service
-        product_service -->|Product Unavailable| websocket_service
+        %% Define the databases group within the project
+        subgraph databases [Databases]
+            mongo[MongoDB]
+            postgre[PostgreSQL]
+        end
+
+        %% Define the caching group within the project
+        subgraph caching [Caching]
+            redis[Redis]
+        end
+
+        %% Define the logging group within the project
+        subgraph logging [Logging]
+            logs[Logs Service]
+        end
+
+        %% Define the websocket group within the project
+        subgraph websocketGroup [WebSocket]
+            websocket[WebSocket Service]
+        end
     end
 
-    %% Direct links to databases for important services
-    product_service <--> mongo
-    auth_service <--> postgres
-    order_service <--> postgres
-    payment_service <--> postgres
+    %% Connect client and backoffice to the API gateway
+    client --> gateway
+    backoffice --> gateway
+
+    %% Connect API gateway to microservices
+    gateway --> cart
+    gateway --> orders
+    gateway --> payments
+    gateway --> products
+
+    %% Connect microservices to databases
+    cart --> mongo
+    orders --> postgre
+    payments --> postgre
+    products --> mongo
+
+    %% Connect microservices to RabbitMQ
+    cart --> rabbitmq
+    orders --> rabbitmq
+    payments --> rabbitmq
+    products --> rabbitmq
+
+    %% Connect microservices to Redis
+    cart --> redis
+    orders --> redis
+    payments --> redis
+    products --> redis
+
+    %% Connect microservices to Logs service
+    orders --> logs
+    payments --> logs
+    products --> logs
+
+    %% Connect Logs service to Redis
+    logs --> redis
+
+    %% Connect WebSocket for real-time data
+    websocket <--> client
+    websocket <--> backoffice
+    websocket <--> cart
+    websocket <--> orders
+    websocket <--> payments
+    websocket <--> products
+
+
+    %% Note: Redis saves cache to MongoDB after 5 minutes
+    redis -.->|Save Logs Cache Every 5 mins| mongo
 ```
