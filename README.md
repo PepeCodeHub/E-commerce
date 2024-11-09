@@ -13,7 +13,6 @@ graph TD
     subgraph Microservices
         %% Core Services
         Auth[Auth Service]
-        User[User Service]
         Orders[Orders Service]
         Payments[Payments Service]
         
