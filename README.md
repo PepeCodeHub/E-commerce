@@ -17,7 +17,6 @@ graph TD
         Payments[Payments Service]
         
         %% Event-Driven Services
-        Logs[Logs Service]
         Notifications[Notifications Service]
         
         %% RabbitMQ
@@ -38,21 +37,18 @@ graph TD
     B -->|Manage Orders| Orders
     
     %% Core Services interactions
-    Auth -->|Validates| User
+    Auth -->|Process Users| DB
     Orders -->|Processes Payments| Payments
     Payments -->|Writes Transactions| DB
-    User -->|Stores and Retrieves Data| DB
     
     %% RabbitMQ event flow (Publishers)
     Orders -->|Publishes to| RabbitMQ
     Payments -->|Publishes to| RabbitMQ
     
     %% RabbitMQ event flow (Subscribers)
-    RabbitMQ -->|Sends to| Logs
     RabbitMQ -->|Sends to| Notifications
     
     %% Event-driven services storing data
-    Logs -->|Stores Logs| Mongo
     Notifications -->|Stores Notifications| Mongo
     
     %% Caching and Data Access
