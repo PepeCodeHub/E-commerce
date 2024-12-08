@@ -1,3 +1,3 @@
-[submodule "auth-service"]
-    path = Backend/services/auth-service
-    url = https://github.com/PepeCodeHub/auth-service.git
+[submodule "Backend/services/auth-service"]
+	path = Backend/services/auth-service
+	url = https://github.com/PepeCodeHub/auth-service.git
