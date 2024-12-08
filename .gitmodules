@@ -1,3 +1,15 @@
 [submodule "Backend/services/auth-service"]
 	path = Backend/services/auth-service
-	url = https://github.com/PepeCodeHub/auth-service.git
+	url = git@github.com:PepeCodeHub/auth-service.git
+[submodule "Databases/PostgreSQL"]
+	path = Databases/PostgreSQL
+	url = git@github.com:PepeCodeHub/PostgreSQL-docker.git
+[submodule "Databases/MongoDB"]
+	path = Databases/MongoDB
+	url = git@github.com:PepeCodeHub/MongoDB-docker.git
+[submodule "Databases/Redis"]
+	path = Databases/Redis
+	url = git@github.com:PepeCodeHub/Redis-docker.git
+[submodule "MessageBrokers/RabbitMQ"]
+	path = MessageBrokers/RabbitMQ
+	url = git@github.com:PepeCodeHub/RabbitMQ-docker.git
