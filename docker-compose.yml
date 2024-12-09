@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: f3an/rabbitmq-docker
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - e-commerce-network
+
+  mongodb:
+    image: f3an/mongo-docker-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_USER_PASSWORD: ${DB_USER_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - e-commerce-network
+
+  postgresql:
+    image: f3an/postgresql-docker-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - e-commerce-network
+
+  redis:
+    image: f3an/redis-docker
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - e-commerce-network
+
+volumes:
+  rabbitmq-data:
+  mongo_data:
+  pgdata:
+  redis-data:
+
+networks:
+  e-commerce-network:
+    driver: bridge
