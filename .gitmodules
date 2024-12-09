@@ -1,5 +1,5 @@
-[submodule "Backend/services/auth-service"]
-	path = Backend/services/auth-service
+[submodule "Api/services/auth-service"]
+	path = Api/services/auth-service
 	url = git@github.com:PepeCodeHub/auth-service.git
 [submodule "Databases/PostgreSQL"]
 	path = Databases/PostgreSQL
