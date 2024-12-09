@@ -1,5 +1,30 @@
 version: '3.8'
 
+x-healthcheck:
+  rabbitmq-healthcheck: &rabbitmq-healthcheck
+    test: ["CMD", "rabbitmqctl", "status"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+  mongodb-healthcheck: &mongodb-healthcheck
+    test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+  postgresql-healthcheck: &postgresql-healthcheck
+    test: ["CMD-SHELL", "pg_isready"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+  redis-healthcheck: &redis-healthcheck
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
 services:
   rabbitmq:
     image: f3an/rabbitmq-docker
@@ -16,10 +41,7 @@ services:
     networks:
       - e-commerce-network
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      <<: *rabbitmq-healthcheck
 
   mongodb:
     image: f3an/mongo-docker-db
@@ -36,10 +58,7 @@ services:
     networks:
       - e-commerce-network
     healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      <<: *mongodb-healthcheck
 
   postgresql:
     image: f3an/postgresql-docker-db
@@ -54,10 +73,7 @@ services:
     networks:
       - e-commerce-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      <<: *postgresql-healthcheck
 
   redis:
     image: f3an/redis-docker
@@ -70,10 +86,7 @@ services:
     networks:
       - e-commerce-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      <<: *redis-healthcheck
       
   app:
     image: f3an/e-commerce-app
