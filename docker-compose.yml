@@ -15,6 +15,11 @@ services:
       - "15672:15672"
     networks:
       - e-commerce-network
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   mongodb:
     image: f3an/mongo-docker-db
@@ -30,6 +35,11 @@ services:
       - "27017:27017"
     networks:
       - e-commerce-network
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   postgresql:
     image: f3an/postgresql-docker-db
@@ -43,6 +53,11 @@ services:
       - "5432:5432"
     networks:
       - e-commerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   redis:
     image: f3an/redis-docker
@@ -54,6 +69,11 @@ services:
       - "6379:6379"
     networks:
       - e-commerce-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   rabbitmq-data:
