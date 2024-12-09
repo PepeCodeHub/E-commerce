@@ -1,0 +1,120 @@
+version: '3.8'
+
+x-healthcheck:
+  rabbitmq-healthcheck: &rabbitmq-healthcheck
+    test: ["CMD", "rabbitmqctl", "status"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+  mongodb-healthcheck: &mongodb-healthcheck
+    test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+  postgresql-healthcheck: &postgresql-healthcheck
+    test: ["CMD-SHELL", "pg_isready"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+  redis-healthcheck: &redis-healthcheck
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+services:
+  rabbitmq:
+    image: f3an/rabbitmq-docker
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - e-commerce-network
+    healthcheck:
+      <<: *rabbitmq-healthcheck
+
+  mongodb:
+    image: f3an/mongo-docker-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_USER_PASSWORD: ${DB_USER_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - e-commerce-network
+    healthcheck:
+      <<: *mongodb-healthcheck
+
+  postgresql:
+    image: f3an/postgresql-docker-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - e-commerce-network
+    healthcheck:
+      <<: *postgresql-healthcheck
+
+  redis:
+    image: f3an/redis-docker
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - e-commerce-network
+    healthcheck:
+      <<: *redis-healthcheck
+      
+  # app:
+  #   image: f3an/e-commerce-app
+  #   environment:
+  #     APP_ENV: ${APP_ENV}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     REDIS_URL: ${REDIS_URL}
+  #     RABBITMQ_URL: ${RABBITMQ_URL}
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - e-commerce-network
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     mongodb:
+  #       condition: service_healthy
+  #     postgresql:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+
+volumes:
+  rabbitmq-data:
+  mongo_data:
+  pgdata:
+  redis-data:
+
+networks:
+  e-commerce-network:
+    driver: bridge
