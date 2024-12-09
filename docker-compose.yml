@@ -88,26 +88,26 @@ services:
     healthcheck:
       <<: *redis-healthcheck
       
-  app:
-    image: f3an/e-commerce-app
-    environment:
-      APP_ENV: ${APP_ENV}
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: ${REDIS_URL}
-      RABBITMQ_URL: ${RABBITMQ_URL}
-    ports:
-      - "8080:8080"
-    networks:
-      - e-commerce-network
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mongodb:
-        condition: service_healthy
-      postgresql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+  # app:
+  #   image: f3an/e-commerce-app
+  #   environment:
+  #     APP_ENV: ${APP_ENV}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     REDIS_URL: ${REDIS_URL}
+  #     RABBITMQ_URL: ${RABBITMQ_URL}
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - e-commerce-network
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     mongodb:
+  #       condition: service_healthy
+  #     postgresql:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
 
 volumes:
   rabbitmq-data:
