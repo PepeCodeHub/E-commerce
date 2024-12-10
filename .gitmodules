@@ -13,3 +13,6 @@
 [submodule "MessageBrokers/RabbitMQ"]
 	path = MessageBrokers/RabbitMQ
 	url = git@github.com:PepeCodeHub/RabbitMQ-docker.git
+[submodule "Api/gateway"]
+	path = Api/gateway
+	url = git@github.com:PepeCodeHub/gateway.git
