@@ -1,5 +1,5 @@
-[submodule "Backend/services/auth-service"]
-	path = Backend/services/auth-service
+[submodule "Api/services/auth-service"]
+	path = Api/services/auth-service
 	url = git@github.com:PepeCodeHub/auth-service.git
 [submodule "Databases/PostgreSQL"]
 	path = Databases/PostgreSQL
@@ -13,3 +13,6 @@
 [submodule "MessageBrokers/RabbitMQ"]
 	path = MessageBrokers/RabbitMQ
 	url = git@github.com:PepeCodeHub/RabbitMQ-docker.git
+[submodule "Api/gateway"]
+	path = Api/gateway
+	url = git@github.com:PepeCodeHub/gateway.git
