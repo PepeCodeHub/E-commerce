@@ -22,3 +22,6 @@
 [submodule "Clients/iOS"]
 	path = Clients/iOS
 	url = git@github.com:PepeCodeHub/iOS.git
+[submodule "Clients/CRM"]
+	path = Clients/CRM
+	url = git@github.com:PepeCodeHub/CRM.git
