@@ -18,7 +18,7 @@
 	url = git@github.com:PepeCodeHub/gateway.git
 [submodule "Clients/Web"]
 	path = Clients/Web
-	url = git@github.com:PepeCodeHub/web.git
+	url = git@github.com:PepeCodeHub/Web.git
 [submodule "Clients/iOS"]
 	path = Clients/iOS
 	url = git@github.com:PepeCodeHub/iOS.git
