@@ -1,18 +1,6 @@
 [submodule "Api/services/auth-service"]
 	path = Api/services/auth-service
 	url = git@github.com:PepeCodeHub/auth-service.git
-[submodule "Databases/PostgreSQL"]
-	path = Database/PostgreSQL
-	url = git@github.com:PepeCodeHub/PostgreSQL-docker.git
-[submodule "Databases/MongoDB"]
-	path = Database/MongoDB
-	url = git@github.com:PepeCodeHub/MongoDB-docker.git
-[submodule "Databases/Redis"]
-	path = Database/Redis
-	url = git@github.com:PepeCodeHub/Redis-docker.git
-[submodule "MessageBrokers/RabbitMQ"]
-	path = MessageBrokers/RabbitMQ
-	url = git@github.com:PepeCodeHub/RabbitMQ-docker.git
 [submodule "Api/gateway"]
 	path = Api/gateway
 	url = git@github.com:PepeCodeHub/gateway.git
@@ -25,3 +13,15 @@
 [submodule "Clients/CRM"]
 	path = Clients/CRM
 	url = git@github.com:PepeCodeHub/CRM.git
+[submodule "Infrastructure/PostgreSQL"]
+	path = Infrastructure/PostgreSQL
+	url = git@github.com:PepeCodeHub/PostgreSQL-docker.git
+[submodule "Infrastructure/MongoDB"]
+	path = Infrastructure/MongoDB
+	url = git@github.com:PepeCodeHub/MongoDB-docker.git
+[submodule "Infrastructure/Redis"]
+	path = Infrastructure/Redis
+	url = git@github.com:PepeCodeHub/Redis-docker.git
+[submodule "Infrastructure/RabbitMQ"]
+	path = Infrastructure/RabbitMQ
+	url = git@github.com:PepeCodeHub/RabbitMQ-docker.git
